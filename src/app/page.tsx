@@ -1,12 +1,17 @@
-function Day({ text }: { text: string}) {
+interface Day {
+  date: Date;
+  status: boolean
+}
+
+function Day({ text }: { text: Day}) {
   return (
     <div>
-      <p>{text}</p>
+      <p>{text.date.toDateString()}</p>
     </div>
   )
 }
 
-function Habit({ aDay }: { aDay: string }) {
+function Habit({ aDay }: { aDay: Day }) {
   return (
     <ul>
       <Day text={aDay} />
@@ -16,11 +21,6 @@ function Habit({ aDay }: { aDay: string }) {
 }
 
 export default function Home() {
-  interface Day {
-    date: Date;
-    status: boolean
-  }
-
   const day: Day = {
     date: new Date(2024, 1),
     status: false
@@ -30,8 +30,8 @@ export default function Home() {
   return (
     <div>
       <main>
-        <Habit aDay="test1" />
-        <Habit aDay="test2" />
+        <Habit aDay={day} />
+        <Habit aDay={day} />
       </main>
       <br />
       <footer>
