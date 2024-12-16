@@ -1,34 +1,37 @@
-function Day() {
+function Day({ text }: { text: string}) {
   return (
     <div>
-      <p>Day</p>
+      <p>{text}</p>
     </div>
   )
 }
 
-function Habit() {
+function Habit({ aDay }: { aDay: string }) {
   return (
     <ul>
-      <Day />
-      <Day />
-      <Day />
+      <Day text={aDay} />
+      <Day text={aDay} />
     </ul>
   )
 }
 
 export default function Home() {
-  /*const day = {
+  interface Day {
+    date: Date;
+    status: boolean
+  }
+
+  const day: Day = {
     date: new Date(2024, 1),
     status: false
   }
   const habit = []
-  const habits = []*/
+  const habits = []
   return (
     <div>
       <main>
-        <Habit />
-        <Habit />
-        <Habit />
+        <Habit aDay="test1" />
+        <Habit aDay="test2" />
       </main>
       <br />
       <footer>
