@@ -1,23 +1,20 @@
 interface Day {
   date: Date;
   status: boolean;
-}
-
-function Day({ aDay }: { aDay: Day}) {
-  return (
-    <div>
-      <p>{aDay.date.toDateString()} = {aDay.status.toString()}</p>
-    </div>
-  )
+  id: number
 }
 
 function Habit({ aHabit }: { aHabit: Day }) {
+  const daysList = aHabit.map(aHabit =>
+    <li key={aHabit.id}>
+      {aHabit.date.toDateString()} = {aHabit.status.toString()}
+    </li>
+  )
+
   return (
     <ul>
-      <Day aDay={aHabit[0]} />
-      <Day aDay={aHabit[1]} />
-      <Day aDay={aHabit[2]} />
-      <button>+</button>
+      {daysList}
+      <li><button>+</button></li>
     </ul>
   )
 }
@@ -25,9 +22,9 @@ function Habit({ aHabit }: { aHabit: Day }) {
 export default function Home() {
   const habits = [];
   let habit: Day[] = [];
-  habit.push({ date: new Date(2024, 1, 1), status: false })
-  habit.push({ date: new Date(2024, 1, 2), status: false })
-  habit.push({ date: new Date(2024, 1, 3), status: false })
+  habit.push({ date: new Date(2024, 1, 1), status: false, id: 1 })
+  habit.push({ date: new Date(2024, 1, 2), status: false, id: 2 })
+  habit.push({ date: new Date(2024, 1, 3), status: false, id: 3 })
 
   // const day: Day = {
   //   date: new Date(2024, 1, 1),
