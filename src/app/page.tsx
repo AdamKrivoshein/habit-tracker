@@ -3,22 +3,29 @@
 import { useReducer } from 'react'
 
 interface State {
-  success: boolean
-  date: Date
+  days: [
+    {
+      success: boolean
+      date: Date
+    }
+  ]
 }
 
 type DayAction =
   | { type: "reset" }
-  | { type: "setSuccess"; value: State["success"] }
+  | { type: "setSuccess"; value: State["days"][0]["success"] }
 
-const initialState: State = { success: false, date: new Date(2024, 1, 1) };
+const initialState: State = { days: [ { success: false, date: new Date(2024, 1, 1) } ] };
 
 function stateReducer(state: State, action: DayAction): State {
   switch (action.type) {
     case "reset":
       return initialState;
     case "setSuccess":
-      return { ...state, success: action.value };
+      return {
+        ...state,
+        days: [...state.days, { success: action.value, date: new Date() }] 
+      };
     default:
       throw new Error("Unknown action");
   }
@@ -32,7 +39,9 @@ export default function Home() {
   return (
     <div>
       <main>
-        <p>{state.date.toDateString()}: {state.success.toString()}</p>
+        {state.days.map((day, index) => (
+          <p key={index}>{day.date.toDateString()}: {day.success.toString()}</p>
+        ))}
         <button onClick={() => markSuccess(true)}>Completed!</button>
         <br />
         <button onClick={() => markSuccess(false)}>Mission failed!</button>
