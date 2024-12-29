@@ -24,8 +24,14 @@ function stateReducer(state: State, action: DayAction): State {
     case "setSuccess":
       return {
         ...state,
-        days: [...state.days, { success: action.value, date: new Date() }] 
+        days: [...state.days, { success: action.value, date: new Date() }]
       };
+    /*case "addSuccess":
+      state.days[0] = 
+      return {
+        ...state,
+        days: [...state.days, state.days[0].success: {success: action.value} ]
+      }*/
     default:
       throw new Error("Unknown action");
   }
