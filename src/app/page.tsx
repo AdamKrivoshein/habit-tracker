@@ -3,6 +3,7 @@
 import { useReducer } from 'react'
 
 interface State {
+  startDate: Date,
   days: [
     {
       success: boolean
@@ -13,19 +14,21 @@ interface State {
 
 type DayAction =
   | { type: "reset" }
-  | { type: "addSuccess"; value: State["days"][0]["success"] }
+  | { type: "addDay"; value: State["days"][0]["success"] }
   | { type: "toggleSuccess"; value: State["days"][0]["date"] }
 
-const initialState: State = { days: [ { success: false, date: new Date(2024, 0, 1) } ] };
+const initialState: State = { startDate: new Date(), days: [ { success: false, date: new Date() } ] };
 
 function stateReducer(state: State, action: DayAction): State {
   switch (action.type) {
     case "reset":
       return initialState;
-    case "addSuccess":
+    case "addDay":
+      const newDay = state["startDate"].getTime() - 86400000;
       return {
         ...state,
-        days: [...state.days, { success: action.value, date: new Date() }]
+        startDate: new Date(newDay),
+        days: [...state.days, { success: action.value, date: new Date(newDay) }]
       }
     case "toggleSuccess":
       const updatedDays = state.days.map(day => {
@@ -46,7 +49,7 @@ function stateReducer(state: State, action: DayAction): State {
 
 export default function Home() {
   const [state, dispatch] = useReducer(stateReducer, initialState);
-  const addSuccess = (successValue: boolean) => dispatch({ type: "addSuccess", value: successValue })
+  const addDay = (successValue: boolean) => dispatch({ type: "addDay", value: successValue })
   const toggleSuccess = (dateValue: Date) => dispatch({ type: "toggleSuccess", value: dateValue })
   const reset = () => dispatch({ type: "reset" })  
 
@@ -54,15 +57,11 @@ export default function Home() {
     <div>
       <main>
         {state.days.map((day, index) => (
-          <button key={index} onClick={() => toggleSuccess(day.date)}>- - {day.date.toDateString()}: {day.success.toString()} - -</button>
+          <button key={index} onClick={() => toggleSuccess(day.date)}>|  {day.date.toDateString()}: {day.success.toString()}  |</button>
         ))}
         <br />
-        <button onClick={() => addSuccess(true)}>Completed!</button>
-        <br />
-        <button onClick={() => addSuccess(false)}>Mission failed!</button>
-        <br />
+        <button onClick={() => addDay(true)}>Add Day</button>
       </main>
-      <br />
       <br />
       <footer>
         <p>A habit tracker</p>
